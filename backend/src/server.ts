@@ -1,15 +1,15 @@
-import express, { Request, Response } from "express";
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import taskRoutes from './routes/taskRoutes';
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware to parse incoming requests with JSON payloads
-app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
+app.use('/api', taskRoutes);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript with Express!");
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
