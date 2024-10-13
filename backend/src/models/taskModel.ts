@@ -19,10 +19,23 @@ export const getTaskById = async (id: number): Promise<Task | null> => {
 };
 
 export const createTask = async (task: Task): Promise<Task> => {
-  const result = await pool.query(
-    "INSERT INTO tasks (title, description, completed, priority) VALUES ($1, $2, $3) RETURNING *",
-    [task.title, task.description, task.completed]
+  const table = await pool.query(
+    `
+    CREATE TABLE IF NOT EXISTS tasks (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      description TEXT NOT NULL,
+      completed BOOLEAN NOT NULL,
+      priority TEXT NOT NULL
+    );
+    `
   );
+
+  const result = await pool.query(
+    "INSERT INTO tasks (title, description, completed, priority) VALUES ($1, $2, $3, $4) RETURNING *",
+    [task.title, task.description, task.completed, task.priority]
+  );
+
   return result.rows[0];
 };
 

@@ -1,4 +1,7 @@
 import { Pool } from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface Database {
   user: string;
@@ -16,6 +19,7 @@ const dbConfig: Database = {
   port: parseInt(process.env.DB_PORT || "5432"),
 };
 
-const pool = new Pool(dbConfig);
+// console.log(dbConfig);
 
+const pool = new Pool(dbConfig);
 export default pool;
